@@ -1,0 +1,93 @@
+Write a solution for the following task in C++. The task shall get its input from the file called feed which is binary file. All the conversions or parsing shall be based on the fact that the input file is a binary file. Here we go:
+
+Introduction
+Your task is to implement a handler for a (simple but not entirely unrealistic) market data feed from an imaginary stock exchange. The focus is on
+parsing and processing, so any actual network communication is omitted; instead, the input is provided as a file, and output is to stdout.
+Language: C++. Modern C++ is encouraged. In terms of language features and standard library functionality, you may use everything supported by recent versions of popular compilers. You may also use the Boost library.
+Platform: Linux or Windows (your choice) on x86-64. It is appreciated if the program can be built and run on both Linux and Windows.
+
+Input:
+A sample input file is provided so you can test during development. Your final program will also be tested using other input files. You may assume that the input file is always small enough to fit into memory all at once.
+The following sections describe the input format in a bottom-up manner.
+
+Data Types:
+The feed uses native C++ data types to enable fast processing. All types use their native x86 representation, i.e. little endian.
+
+Numeric Types:
+Numeric types used in the feed are: int8_t, int32_t, int64_t, double (64 bits).
+
+Strings:
+There is only one type of string in the feed, the so-called symbol which uniquely identifies stock listings at the exchange. A symbol is an ASCII
+string consisting entirely of uppercase letters and decimal digits, the length is at least one and at most six.
+
+In market data messages, symbols are always transmitted as exactly six bytes. If the actual symbol has less than six characters, it is padded with null bytes at the end.
+
+Messages:
+Each message consists of a header, followed immediately by the body. The size of a message depends on its type. There is no padding between header and body, nor is there padding at the end of the message.
+
+- Header:
+The header consists of a single int8_t which identifies the message type.
+- Body:
+There are different message body structures for different message types. For parsing, the correct type must be chosen based on the message type indicated in the header.
+Within a message body, fields appear in the order given in the definitions below. There is no padding between fields, nor is there padding at the end of the body.
+
+Type 1: Best Bid/Ask
+Messages of this type provide the current Best Bid and Best Ask prices for a given listing.
+Type: symbol string          
+Name: symbol
+Description:Identifies the listing to which this message is related.
+
+Type: double 
+Name: best_bid
+Description: The current best bid price for the listing.
+
+Type: double 
+Name: best_ask 
+Description: The current best ask price for the listing
+______________________
+Type 2: Trade
+Messages of this type indicate that a trade took place for a given listing.
+Type: symbol string
+Name: symbol 
+Description: Identifies the listing to which this message is related.
+
+Type: int32_t 
+Name: trade_id 
+Description: Uniquely identifies this trade.
+
+Type: int64_t 
+Name: timestamp
+Description: Time when the trade took place, in nanoseconds since the Unix epoch.
+
+Type: int32_t 
+Name: quantity 
+Description: The number of shares that were traded.
+
+Type: double 
+Name: price 
+Description: The price per share that was paid in this trade.
+_______________________________________________________________
+Type 3: Trade Cancellation
+Messages of this type indicate that a trade has been reverted, e.g. if it has been ruled a mistrade by the stock exchange. When a trade has been cancelled, it is as if it had never existed.
+  
+Type: symbol string
+Name: symbol 
+Description: Identifies the listing to which this message is related.
+
+Type: int32_t 
+Name: trade_id 
+Description: ID of the trade that has been cancelled
+
+Feed:
+The feed (i.e. input file) is a binary file and consists of a series of messages, with nothing else before, between or after the messages. The feed is in chronological order.
+
+Expected Functionality:
+- Part One: Your program must read and parse all messages in the input. Each message must be transformed into a native C++ struct and then printed to stdout in human-readable form.
+- Part Two: Once all input has been processed, the program must print this information for each listing it encountered in the input:
+-- latest value of best_bid
+-- latest value of best_ask
+-- per-share price paid in the last trade
+-- number of trades that took place
+-- total quantity traded (i.e. the sum of the quantities of all trades)
+-- total turnover (obtained by multiplying price and quantity for each trade, and then adding these up)
+
