@@ -1,8 +1,7 @@
 Write a solution for the following task in C++. The task shall get its input from the file called feed which is binary file. All the conversions or parsing shall be based on the fact that the input file is a binary file. Here we go:
 
 Introduction
-Your task is to implement a handler for a (simple but not entirely unrealistic) market data feed from an imaginary stock exchange. The focus is on
-parsing and processing, so any actual network communication is omitted; instead, the input is provided as a file, and output is to stdout.
+Your task is to implement a handler for a (simple but not entirely unrealistic) market data feed from an imaginary stock exchange. The focus is on parsing and processing, so any actual network communication is omitted; instead, the input is provided as a file, and output is to stdout.
 Language: C++. Modern C++ is encouraged. In terms of language features and standard library functionality, you may use everything supported by recent versions of popular compilers. You may also use the Boost library.
 Platform: Linux or Windows (your choice) on x86-64. It is appreciated if the program can be built and run on both Linux and Windows.
 
@@ -17,8 +16,7 @@ Numeric Types:
 Numeric types used in the feed are: int8_t, int32_t, int64_t, double (64 bits).
 
 Strings:
-There is only one type of string in the feed, the so-called symbol which uniquely identifies stock listings at the exchange. A symbol is an ASCII
-string consisting entirely of uppercase letters and decimal digits, the length is at least one and at most six.
+There is only one type of string in the feed, the so-called symbol which uniquely identifies stock listings at the exchange. A symbol is an ASCII string consisting entirely of uppercase letters and decimal digits, the length is at least one and at most six.
 
 In market data messages, symbols are always transmitted as exactly six bytes. If the actual symbol has less than six characters, it is padded with null bytes at the end.
 
